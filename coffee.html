@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بن العميد | حكاية قهوة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --gold: #d5ad69;
+  --cream: #f5ead8;
+  --black: #100e0b;
+  --brown: #21170f;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Cairo', sans-serif;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; }
+.gold { color: var(--gold); }
+
+/* ===== INTRO ANIMATION ===== */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at center, #422919 0%, #17100b 42%, #080706 100%);
+  animation: introOut 1s ease 4.1s forwards;
+}
+.intro::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border: 1px solid #d5ad6944;
+  border-radius: 50%;
+  box-shadow: 0 0 90px #d5ad691c, inset 0 0 80px #d5ad6914;
+  animation: circleIn 1.5s ease both;
+}
+.intro::after {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border: 1px solid #d5ad6922;
+  border-radius: 50%;
+  animation: circleIn 2s ease both;
+}
+.cup {
+  font-size: 65px;
+  z-index: 1;
+  opacity: 0;
+  animation: cupIn 1s ease .3s forwards, float 2s ease-in-out 1.3s infinite;
+  filter: drop-shadow(0 0 20px #d5ad6960);
+}
+.intro-title {
+  z-index: 1;
+  margin-top: 12px;
+  color: var(--gold);
+  font-size: clamp(40px, 9vw, 76px);
+  font-weight: 900;
+  letter-spacing: 2px;
+  opacity: 0;
+  transform: translateY(25px);
+  animation: titleIn 1s ease 1.1s forwards;
+  text-shadow: 0 0 35px #d5ad6940;
+}
+.intro-sub {
+  z-index: 1;
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #e8d6b5;
+  opacity: 0;
+  animation: fadeIn 1s ease 2s forwards;
+}
+.intro-line {
+  z-index: 1;
+  width: 0;
+  height: 2px;
+  margin-top: 25px;
+  background: var(--gold);
+  animation: lineIn 1.2s ease 2.3s forwards;
+}
+.intro-small {
+  z-index: 1;
+  margin-top: 14px;
+  color: #a99980;
+  font-size: 12px;
+  opacity: 0;
+  animation: fadeIn 1s ease 2.7s forwards;
+}
+.skip {
+  position: absolute;
+  bottom: 28px;
+  z-index: 2;
+  color: #c9b89c;
+  background: transparent;
+  border: 1px solid #8d7046;
+  padding: 8px 22px;
+  border-radius: 30px;
+  font-size: 12px;
+}
+.skip:hover { background: #d5ad691c; }
+
+@keyframes circleIn {
+  from { transform: scale(.4) rotate(-35deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes cupIn {
+  from { opacity: 0; transform: translateY(30px) scale(.5); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes titleIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes lineIn { to { width: 150px; } }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes introOut {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+/* ===== NAVIGATION ===== */
+header {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7%;
+  border-bottom: 1px solid #ffffff10;
+  background: #100e0bf5;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(14px);
+}
+.logo {
+  font-size: 24px;
+  color: var(--gold);
+  font-weight: 900;
+}
+.logo span { display: block; font-size: 9px; letter-spacing: 4px; color: #c7b69b; }
+nav { display: flex; gap: 28px; align-items: center; }
+nav a { color: #d6cbb9; font-size: 13px; transition: .3s; }
+nav a:hover { color: var(--gold); }
+.cart-btn {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid #8f6c3c;
+  border-radius: 25px;
+  padding: 9px 16px;
+  font-size: 13px;
+}
+.cart-btn b { margin-right: 5px; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 35px;
+  padding: 65px 8%;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 75% 45%, #55351e44, transparent 48%),
+    linear-gradient(115deg, #100e0b, #1b120c);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  height: 1px;
+  bottom: 0;
+  left: 8%;
+  right: 8%;
+  background: linear-gradient(90deg, transparent, #d5ad6955, transparent);
+}
+.eyebrow {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(36px, 5.3vw, 66px);
+  line-height: 1.5;
+  font-weight: 900;
+}
+.hero h1 em { color: var(--gold); font-style: normal; }
+.hero p {
+  color: #b8aa96;
+  line-height: 2.2;
+  font-size: 14px;
+  max-width: 470px;
+  margin: 20px 0 28px;
+}
+.primary-btn {
+  display: inline-block;
+  padding: 13px 27px;
+  background: var(--gold);
+  color: #17100b;
+  border: 0;
+  border-radius: 3px;
+  font-weight: 800;
+  transition: .3s;
+}
+.primary-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 28px #d5ad6933; }
+.secondary-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: 1px solid #9d7a4d;
+  color: var(--cream);
+  margin-right: 10px;
+  border-radius: 3px;
+}
+.hero-art {
+  min-height: 390px;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.hero-art img {
+  width: 100%;
+  max-width: 440px;
+  height: 390px;
+  object-fit: cover;
+  border-radius: 48% 48% 4px 4px;
+  filter: brightness(.8) sepia(.12);
+  mask-image: linear-gradient(to bottom, black 72%, transparent 100%);
+}
+.art-label {
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  background: #18110bea;
+  border: 1px solid #d5ad6950;
+  padding: 16px 22px;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+/* ===== FEATURES ===== */
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 35px 8%;
+  border-bottom: 1px solid #ffffff0c;
+}
+.feature { text-align: center; padding: 15px; }
+.feature .symbol { font-size: 25px; color: var(--gold); }
+.feature h3 { font-size: 14px; margin: 8px 0; }
+.feature p { color: #938675; font-size: 11px; }
+
+/* ===== PRODUCTS ===== */
+.section { padding: 90px 8%; }
+.section-head { text-align: center; margin-bottom: 45px; }
+.section-head .eyebrow { margin-bottom: 10px; }
+.section-head h2 { font-size: clamp(26px, 4vw, 38px); }
+.section-head p { color: #a99a87; font-size: 13px; margin-top: 10px; }
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.filter {
+  padding: 8px 19px;
+  color: #d2c4b0;
+  border: 1px solid #403125;
+  background: transparent;
+  border-radius: 30px;
+}
+.filter.active, .filter:hover {
+  background: var(--gold);
+  color: #17100b;
+  border-color: var(--gold);
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 23px;
+}
+.product {
+  background: linear-gradient(145deg, #201810, #14110e);
+  border: 1px solid #ffffff0d;
+  overflow: hidden;
+  transition: .35s;
+}
+.product:hover {
+  transform: translateY(-7px);
+  border-color: #d5ad6955;
+  box-shadow: 0 16px 35px #0005;
+}
+.product-img {
+  height: 255px;
+  overflow: hidden;
+  position: relative;
+  background: #24190f;
+}
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s;
+}
+.product:hover .product-img img { transform: scale(1.06); }
+.tag {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  background: var(--gold);
+  color: #17100b;
+  padding: 4px 11px;
+  font-size: 10px;
+  font-weight: 800;
+}
+.product-info { padding: 20px; }
+.category { color: var(--gold); font-size: 10px; }
+.product h3 { font-size: 18px; margin: 7px 0; }
+.product-info p { color: #a99a87; font-size: 12px; line-height: 1.9; min-height: 46px; }
+.product-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+.price { color: var(--gold); font-weight: 800; font-size: 15px; }
+.add-btn {
+  background: transparent;
+  border: 1px solid #9e7a4a;
+  color: var(--gold);
+  padding: 8px 12px;
+  font-size: 11px;
+  transition: .3s;
+}
+.add-btn:hover { background: var(--gold); color: #100e0b; }
+
+/* ===== BRAND STORY ===== */
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+  align-items: center;
+  background: #1b140e;
+  padding: 75px 8%;
+}
+.story img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  filter: brightness(.75);
+}
+.story h2 { font-size: 34px; margin-bottom: 20px; line-height: 1.7; }
+.story p { color: #b5a792; line-height: 2.3; font-size: 13px; }
+
+/* ===== CART ===== */
+.cart-panel {
+  position: fixed;
+  top: 0;
+  left: -410px;
+  width: min(390px, 92vw);
+  height: 100dvh;
+  z-index: 500;
+  padding: 25px;
+  background: #1a130d;
+  border-right: 1px solid #d5ad6950;
+  transition: left .35s;
+  overflow-y: auto;
+}
+.cart-panel.open { left: 0; }
+.cart-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.cart-head h2 { color: var(--gold); }
+.close-cart { background: transparent; color: white; border: 0; font-size: 26px; }
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #ffffff15;
+  padding: 15px 0;
+  font-size: 13px;
+}
+.cart-item button { background: transparent; color: #e7a08b; border: 0; }
+.cart-total { margin: 25px 0; font-size: 17px; }
+.cart-total strong { color: var(--gold); }
+.checkout {
+  width: 100%;
+  padding: 13px;
+  background: var(--gold);
+  color: #100e0b;
+  border: 0;
+  font-weight: 800;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: #0009;
+  z-index: 400;
+  display: none;
+}
+.overlay.show { display: block; }
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 40px 8%;
+  text-align: center;
+  border-top: 1px solid #ffffff12;
+  color: #958673;
+  font-size: 12px;
+}
+footer .logo { margin-bottom: 12px; }
+footer p { margin: 8px 0; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 800px) {
+  header { padding: 0 5%; height: 72px; }
+  nav { gap: 12px; }
+  nav a { font-size: 11px; }
+  .logo { font-size: 19px; }
+  .hero { grid-template-columns: 1fr; padding: 55px 7%; }
+  .hero-art { min-height: 280px; }
+  .hero-art img { height: 300px; max-width: 360px; }
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+  .product-img { height: 200px; }
+  .product-info { padding: 13px; }
+  .product h3 { font-size: 15px; }
+  .product-info p { font-size: 11px; }
+  .product-bottom { flex-wrap: wrap; }
+  .story { grid-template-columns: 1fr; gap: 25px; }
+}
+@media (max-width: 480px) {
+  nav a:nth-child(2), nav a:nth-child(3) { display: none; }
+  .features { padding: 25px 4%; gap: 5px; }
+  .feature { padding: 8px 3px; }
+  .feature h3 { font-size: 11px; }
+  .feature p { font-size: 10px; }
+  .section { padding: 60px 5%; }
+  .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product-img { height: 160px; }
+  .price { font-size: 12px; }
+  .add-btn { padding: 7px 8px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <div class="cup">☕</div>
+  <div class="intro-title">بن العميد</div>
+  <div class="intro-sub">AL AMEED COFFEE</div>
+  <div class="intro-line"></div>
+  <div class="intro-small">كل فنجان له حكاية</div>
+  <button class="skip" onclick="closeIntro()">تخطّي المقدمة ←</button>
+</div>
+
+<!-- NAV -->
+<header>
+  <a href="#" class="logo">بن العميد <span>AL AMEED COFFEE</span></a>
+  <nav>
+    <a href="#home">الرئيسية</a>
+    <a href="#products">منتجاتنا</a>
+    <a href="#story">حكايتنا</a>
+  </nav>
+  <button class="cart-btn" onclick="toggleCart(true)">
+    🛒 السلة <b id="cart-count">0</b>
+  </button>
+</header>
+
+<!-- HERO -->
+<main>
+<section class="hero" id="home">
+  <div>
+    <div class="eyebrow">✦ تجربة قهوة استثنائية ✦</div>
+    <h1>مش مجرد قهوة...<br><em>دي حكاية مزاج</em></h1>
+    <p>
+      اكتشف عالم القهوة مع بن العميد، واستمتع برائحة البن الغني
+      وطعم يخلي كل لحظة مختلفة. اختار قهوتك وخلي يومك يبدأ صح.
+    </p>
+    <a href="#products" class="primary-btn">اكتشف منتجاتنا ↙</a>
+    <a href="#story" class="secondary-btn">حكايتنا</a>
+  </div>
+  <div class="hero-art">
+    <img
+      src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1000&q=85"
+      alt="حبوب قهوة محمصة"
+    >
+    <div class="art-label">بن مختار بعناية ✦ جودة في كل فنجان</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="feature">
+    <div class="symbol">✦</div>
+    <h3>جودة مميزة</h3>
+    <p>اختيارات تناسب عشاق القهوة</p>
+  </div>
+  <div class="feature">
+    <div class="symbol">☕</div>
+    <h3>طعم غني</h3>
+    <p>تجربة تستحق إنك تعيشها</p>
+  </div>
+  <div class="feature">
+    <div class="symbol">♨</div>
+    <h3>مزاج على أصوله</h3>
+    <p>قهوتك المفضلة في كل وقت</p>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" id="products">
+  <div class="section-head">
+    <div class="eyebrow">THE COLLECTION</div>
+    <h2>اكتشف <span class="gold">عالم القهوة</span></h2>
+    <p>اختار النوع اللي يناسب مزاجك</p>
+  </div>
+
+  <div class="filters">
+    <button class="filter active" data-filter="all">كل المنتجات</button>
+    <button class="filter" data-filter="turkish">قهوة تركي</button>
+    <button class="filter" data-filter="espresso">إسبريسو</button>
+    <button class="filter" data-filter="beans">حبوب بن</button>
+  </div>
+
+  <div class="products">
+
+    <article class="product" data-category="turkish">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=700&q=80" alt="قهوة تركي">
+        <span class="tag">اختيار مميز</span>
+      </div>
+      <div class="product-info">
+        <span class="category">TURKISH COFFEE</span>
+        <h3>قهوة تركي كلاسيك</h3>
+        <p>لعشاق الطعم الأصيل والرائحة الغنية.</p>
+        <div class="product-bottom">
+          <span class="price">يُحدد السعر</span>
+          <button class="add-btn" onclick="addToCart('قهوة تركي كلاسيك')">+ أضف للسلة</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product" data-category="espresso">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=700&q=80" alt="إسبريسو">
+        <span class="tag">للمحترفين</span>
+      </div>
+      <div class="product-info">
+        <span class="category">ESPRESSO</span>
+        <h3>بن إسبريسو</h3>
+        <p>نكهة قوية لعشاق القهوة المركزة.</p>
+        <div class="product-bottom">
+          <span class="price">يُحدد السعر</span>
+          <button class="add-btn" onclick="addToCart('بن إسبريسو')">+ أضف للسلة</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product" data-category="beans">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=700&q=80" alt="حبوب بن">
+      </div>
+      <div class="product-info">
+        <span class="category">COFFEE BEANS</span>
+        <h3>حبوب بن محمصة</h3>
+        <p>اختيار مناسب لمحبي طحن البن الطازج.</p>
+        <div class="product-bottom">
+          <span class="price">يُحدد السعر</span>
+          <button class="add-btn" onclick="addToCart('حبوب بن محمصة')">+ أضف للسلة</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product" data-category="turkish">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=700&q=80" alt="قهوة بالحليب">
+      </div>
+      <div class="product-info">
+        <span class="category">SPECIAL BLEND</span>
+        <h3>خلطة العميد الخاصة</h3>
+        <p>خلطة مميزة قابلة للتخصيص حسب منتجات المحل.</p>
+        <div class="product-bottom">
+          <span class="price">يُحدد السعر</span>
+          <button class="add-btn" onclick="addToCart('خلطة العميد الخاصة')">+ أضف للسلة</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product" data-category="espresso">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=700&q=80" alt="فنجان قهوة">
+      </div>
+      <div class="product-info">
+        <span class="category">DARK ROAST</span>
+        <h3>تحميص داكن</h3>
+        <p>لعشاق النكهات العميقة والمذاق القوي.</p>
+        <div class="product-bottom">
+          <span class="price">يُحدد السعر</span>
+          <button class="add-btn" onclick="addToCart('تحميص داكن')">+ أضف للسلة</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="product" data-category="beans">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=80" alt="تحضير القهوة">
+      </div>
+      <div class="product-info">
+        <span class="category">COFFEE TIME</span>
+        <h3>اختيارات القهوة</h3>
+        <p>تصفح تشكيلتنا وحدد المنتج المناسب ليك.</p>
+        <div class="product-bottom">
+          <span class="price">تواصل للاستفسار</span>
+          <button class="add-btn" onclick="addToCart('اختيارات القهوة')">+ أضف للسلة</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <img
+    src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1000&q=85"
+    alt="تحضير القهوة بعناية"
+    loading="lazy"
+  >
+  <div>
+    <div class="eyebrow">OUR STORY</div>
+    <h2>وراء كل فنجان<br><span class="gold">حكاية تستاهل تتعاش</span></h2>
+    <p>
+      في بن العميد، القهوة مش مجرد مشروب؛ دي لحظة راحة،
+      وبداية يوم، ولمّة ناس بنحبهم.
+      اكتشف منتجاتنا واختار مذاقك المفضل.
+    </p>
+    <br>
+    <a href="#products" class="primary-btn">شوف منتجاتنا</a>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">بن العميد</div>
+  <p>كل فنجان له حكاية ☕</p>
+  <p>© 2026 بن العميد — جميع الحقوق محفوظة</p>
+  <p>الأسعار والصور قابلة للتعديل حسب منتجات المحل الفعلية.</p>
+</footer>
+
+<!-- CART PANEL -->
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<aside class="cart-panel" id="cart-panel">
+  <div class="cart-head">
+    <h2>سلة مشترياتك</h2>
+    <button class="close-cart" onclick="toggleCart(false)">×</button>
+  </div>
+  <div id="cart-items"></div>
+  <div class="cart-total">عدد المنتجات: <strong id="cart-total-count">0</strong></div>
+  <button class="checkout" onclick="checkout()">تأكيد الطلب</button>
+  <p style="color:#a99a87;font-size:11px;margin-top:12px;line-height:2">
+    الأسعار غير مضافة بعد. تأكيد الطلب هنا يحتاج ربطه ببيانات المحل ووسيلة تواصل فعلية.
+  </p>
+</aside>
+
+<script>
+// إغلاق الأنيميشن
+function closeIntro() {
+  const intro = document.getElementById('intro');
+  intro.style.animation = 'none';
+  intro.style.opacity = '0';
+  intro.style.visibility = 'hidden';
+  intro.style.pointerEvents = 'none';
+}
+
+// تصنيفات المنتجات
+document.querySelectorAll('.filter').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+    button.classList.add('active');
+
+    const filter = button.dataset.filter;
+    document.querySelectorAll('.product').forEach(product => {
+      product.style.display =
+        filter === 'all' || product.dataset.category === filter
+          ? ''
+          : 'none';
+    });
+  });
+});
+
+// سلة المشتريات
+const cart = [];
+
+function addToCart(name) {
+  const item = cart.find(product => product.name === name);
+
+  if (item) {
+    item.quantity++;
+  } else {
+    cart.push({ name, quantity: 1 });
+  }
+
+  renderCart();
+  toggleCart(true);
+}
+
+function renderCart() {
+  const itemsContainer = document.getElementById('cart-items');
+
+  itemsContainer.innerHTML = cart.length
+    ? cart.map((item, index) => `
+      <div class="cart-item">
+        <div>
+          <strong>${item.name}</strong>
+          <div style="color:#b6a58f;margin-top:5px">
+            الكمية: ${item.quantity}
+          </div>
+        </div>
+        <div>
+          <button onclick="changeQuantity(${index}, -1)">−</button>
+          <button onclick="changeQuantity(${index}, 1)">+</button>
+          <button onclick="removeItem(${index})">حذف</button>
+        </div>
+      </div>
+    `).join('')
+    : '<p style="color:#a99a87">السلة لسه فاضية، اختار قهوتك المفضلة.</p>';
+
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById('cart-count').textContent = count;
+  document.getElementById('cart-total-count').textContent = count;
+}
+
+function changeQuantity(index, amount) {
+  cart[index].quantity += amount;
+  if (cart[index].quantity <= 0) cart.splice(index, 1);
+  renderCart();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+
+function toggleCart(open) {
+  document.getElementById('cart-panel').classList.toggle('open', open);
+  document.getElementById('overlay').classList.toggle('show', open);
+}
+
+function checkout() {
+  if (!cart.length) {
+    alert('السلة فاضية! اختار منتج الأول.');
+    return;
+  }
+
+  alert(
+    'طلبك المبدئي:\n' +
+    cart.map(item => `${item.name} × ${item.quantity}`).join('\n') +
+    '\n\nالخطوة التالية: ربط الطلب برقم واتساب المحل.'
+  );
+}
+
+renderCart();
+</script>
+</body>
+</html>
